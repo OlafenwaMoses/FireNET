@@ -1,12 +1,9 @@
-from imageai.Detection.Custom import CustomObjectDetection, CustomVideoObjectDetection
+from imageai.Detection.Custom import DetectionModelTrainer, CustomObjectDetection, CustomVideoObjectDetection
 import os
 
 execution_path = os.getcwd()
 
-
 def train_detection_model():
-    from imageai.Detection.Custom import DetectionModelTrainer
-
     trainer = DetectionModelTrainer()
     trainer.setModelTypeAsYOLOv3()
     trainer.setDataDirectory(data_directory="fire-dataset")
@@ -16,11 +13,10 @@ def train_detection_model():
     # https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/pretrained-yolov3.h5
     trainer.trainModel()
 
-
 def detect_from_image():
     detector = CustomObjectDetection()
     detector.setModelTypeAsYOLOv3()
-    detector.setModelPath(detection_model_path=os.path.join(execution_path, "detection_model-ex-33--loss-4.97.h5"))
+    detector.setModelPath(detection_model_path=os.path.join(execution_path, "detection_model-ex-33--loss-4.97.pt"))
     detector.setJsonPath(configuration_json=os.path.join(execution_path, "detection_config.json"))
     detector.loadModel()
 
@@ -34,10 +30,16 @@ def detect_from_image():
 def detect_from_video():
     detector = CustomVideoObjectDetection()
     detector.setModelTypeAsYOLOv3()
-    detector.setModelPath(detection_model_path=os.path.join(execution_path, "detection_model-ex-33--loss-4.97.h5"))
+    detector.setModelPath(detection_model_path=os.path.join(execution_path, "detection_model-ex-33--loss-4.97.pt"))
     detector.setJsonPath(configuration_json=os.path.join(execution_path, "detection_config.json"))
     detector.loadModel()
 
-    detected_video_path = detector.detectObjectsFromVideo(input_file_path=os.path.join(execution_path, "video1.mp4"), frames_per_second=30, output_file_path=os.path.join(execution_path, "video1-detected"), minimum_percentage_probability=40, log_progress=True )
+    detected_video_path = detector.detectObjectsFromVideo(input_file_path=os.path.join(execution_path, "video1.mp4"),
+                                                           frames_per_second=30,
+                                                           output_file_path=os.path.join(execution_path, "video1-detected"),
+                                                           minimum_percentage_probability=40, log_progress=True)
 
-
+# Uncomment the function calls below to use them
+# train_detection_model()
+# detect_from_image()
+# detect_from_video()
